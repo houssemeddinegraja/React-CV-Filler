@@ -1,66 +1,38 @@
-import { useEffect, useRef, useState } from 'react';
-import CVEditButton from './edit.jsx';
+import { useState } from 'react';
 
-export default function EducationSection({ submitSignal = 0 }) {
+function EducationSection() {
+    const [education, setEducation] = useState({ school: '', degree: '', startDate: '', endDate: '' });
     const [isEditing, setIsEditing] = useState(true);
-    const [formData, setFormData] = useState({
-        school: '',
-        degree: '',
-        startDate: '',
-        endDate: ''
-    });
-    const [submittedData, setSubmittedData] = useState(null);
-    const lastSubmitSignal = useRef(submitSignal);
 
-    useEffect(() => {
-        if (submitSignal === lastSubmitSignal.current) return;
-        lastSubmitSignal.current = submitSignal;
-        setSubmittedData(formData);
-        setIsEditing(false);
-    }, [formData, submitSignal]);
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((previousData) => ({
-            ...previousData,
-            [name]: value
-        }));
-    };
-
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
-
-    return (
-        <section>
-            <h2>Educational Background</h2>
-
-            {isEditing ? (
-                <>
-                    <label>
-                        School: <input type="text" name="school" value={formData.school} onChange={handleChange} placeholder="Enter your school name" />
-                    </label>
-                    <label>
-                        Degree/Field: <input type="text" name="degree" value={formData.degree} onChange={handleChange} placeholder="Enter your degree" />
-                    </label>
-                    <label>Study Period:</label>
-                    <label>
-                        Start Date:
-                        <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} />
-                    </label>
-                    <label>
-                        End Date:
-                        <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} />
-                    </label>
-                </>
-            ) : (
-                <>
-                    <p><strong>School:</strong> {submittedData?.school || 'N/A'}</p>
-                    <p><strong>Degree/Field:</strong> {submittedData?.degree || 'N/A'}</p>
-                    <p><strong>Study Period:</strong> {submittedData?.startDate || 'N/A'} to {submittedData?.endDate || 'N/A'}</p>
-                    <CVEditButton onEdit={handleEdit} />
-                </>
-            )}
-        </section>
+    return isEditing ? (
+        <>
+            <label>
+                <strong>School:</strong> <input type="text" name="school" value={education.school} onChange={(e) => setEducation({ ...education, school: e.target.value })} placeholder="Enter school name" />
+            </label>
+            <label>
+                <strong>Degree/Field:</strong> <input type="text" name="degree" value={education.degree} onChange={(e) => setEducation({ ...education, degree: e.target.value })} placeholder="Enter your degree" />
+            </label>
+            <label>
+                <strong>Study Period:</strong>
+            </label>
+            <label>
+                Start Date:
+                <input type="date" name="startDate" value={education.startDate} onChange={(e) => setEducation({ ...education, startDate: e.target.value })} />
+            </label>
+            <label>
+                End Date:
+                <input type="date" name="endDate" value={education.endDate} onChange={(e) => setEducation({ ...education, endDate: e.target.value })} />
+            </label>
+            <button onClick={() => setIsEditing(false)}>Save</button>
+        </>
+    ) : (
+        <>
+            <p><strong>School:</strong> {education.school || 'N/A'}</p>
+            <p><strong>Degree/Field:</strong> {education.degree || 'N/A'}</p>
+            <p><strong>Study Period:</strong> {education.startDate || 'N/A'} to {education.endDate || 'N/A'}</p>
+            <button onClick={() => setIsEditing(true)}>Edit</button>
+        </>
     );
 }
+
+export default EducationSection;
