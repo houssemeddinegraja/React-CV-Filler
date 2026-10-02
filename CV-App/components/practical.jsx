@@ -1,71 +1,42 @@
-import { useEffect, useRef, useState } from 'react';
-import CVEditButton from './edit.jsx';
+import { useState } from 'react';
 
-export default function PracticalExperienceSection({ submitSignal = 0 }) {
+function PracticalExperienceSection() {
+    const [experience, setExperience] = useState({ company: '', position: '', responsibilities: '', startDate: '', endDate: '' });
     const [isEditing, setIsEditing] = useState(true);
-    const [formData, setFormData] = useState({
-        company: '',
-        position: '',
-        responsibilities: '',
-        startDate: '',
-        endDate: ''
-    });
-    const [submittedData, setSubmittedData] = useState(null);
-    const lastSubmitSignal = useRef(submitSignal);
 
-    useEffect(() => {
-        if (submitSignal === lastSubmitSignal.current) return;
-        lastSubmitSignal.current = submitSignal;
-        setSubmittedData(formData);
-        setIsEditing(false);
-    }, [formData, submitSignal]);
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((previousData) => ({
-            ...previousData,
-            [name]: value
-        }));
-    };
-
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
-
-    return (
-        <section>
-            <h2>Practical Experience</h2>
-
-            {isEditing ? (
-                <>
-                    <label>
-                        Company: <input type="text" name="company" value={formData.company} onChange={handleChange} placeholder="Enter company name" />
-                    </label>
-                    <label>
-                        Position: <input type="text" name="position" value={formData.position} onChange={handleChange} placeholder="Enter your position" />
-                    </label>
-                    <label>
-                        Responsibilities: <textarea name="responsibilities" value={formData.responsibilities} onChange={handleChange} placeholder="Enter your responsibilities" />
-                    </label>
-                    <label>Duration:</label>
-                    <label>
-                        Start Date:
-                        <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} />
-                    </label>
-                    <label>
-                        End Date:
-                        <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} />
-                    </label>
-                </>
-            ) : (
-                <>
-                    <p><strong>Company:</strong> {submittedData?.company || 'N/A'}</p>
-                    <p><strong>Position:</strong> {submittedData?.position || 'N/A'}</p>
-                    <p><strong>Responsibilities:</strong> {submittedData?.responsibilities || 'N/A'}</p>
-                    <p><strong>Duration:</strong> {submittedData?.startDate || 'N/A'} to {submittedData?.endDate || 'N/A'}</p>
-                    <CVEditButton onEdit={handleEdit} />
-                </>
-            )}
-        </section>
+    return isEditing ? (
+        <>
+            <label>
+                <strong>Company:</strong> <input type="text" name="company" value={experience.company} onChange={(e) => setExperience({ ...experience, company: e.target.value })} placeholder="Enter company name" />
+            </label>
+            <label>
+                <strong>Position:</strong> <input type="text" name="position" value={experience.position} onChange={(e) => setExperience({ ...experience, position: e.target.value })} placeholder="Enter your position" />
+            </label>
+            <label>
+                <strong>Responsibilities:</strong> <textarea name="responsibilities" value={experience.responsibilities} onChange={(e) => setExperience({ ...experience, responsibilities: e.target.value })} placeholder="Describe your responsibilities" />
+            </label>
+            <label>
+                <strong>Work Period:</strong>
+            </label>
+            <label>
+                Start Date:
+                <input type="date" name="startDate" value={experience.startDate} onChange={(e) => setExperience({ ...experience, startDate: e.target.value })} />
+            </label>
+            <label>
+                End Date:
+                <input type="date" name="endDate" value={experience.endDate} onChange={(e) => setExperience({ ...experience, endDate: e.target.value })} />
+            </label>
+            <button onClick={() => setIsEditing(false)}>Save</button>
+        </>
+    ) : (
+        <>  
+            <p><strong>Company:</strong> {experience.company || 'N/A'}</p>
+            <p><strong>Position:</strong> {experience.position || 'N/A'}</p>
+            <p><strong>Responsibilities:</strong> {experience.responsibilities || 'N/A'}</p>
+            <p><strong>Work Period:</strong> {experience.startDate || 'N/A'} to {experience.endDate || 'N/A'}</p>
+            <button onClick={() => setIsEditing(true)}>Edit</button>
+        </>
     );
 }
+
+export default PracticalExperienceSection;
