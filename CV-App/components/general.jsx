@@ -1,64 +1,34 @@
-import { useEffect, useRef, useState } from 'react';
-import CVEditButton from './edit.jsx';
+import { useState } from 'react';
 
-export default function GeneralInfoSection({ submitSignal = 0 }) {
-    const [isEditing, setIsEditing] = useState(true);
-    const [formData, setFormData] = useState({
-        name: '',
-        familyName: '',
-        email: '',
-        phone: ''
-    });
-    const [submittedData, setSubmittedData] = useState(null);
-    const lastSubmitSignal = useRef(submitSignal);
+function GeneralInfoSection() {
+  const [info, setInfo] = useState({ name: '', familyName: '', email: '', phone: '' });
+  const [isEditing, setIsEditing] = useState(true);
 
-    useEffect(() => {
-        if (submitSignal === lastSubmitSignal.current) return;
-        lastSubmitSignal.current = submitSignal;
-        setSubmittedData(formData);
-        setIsEditing(false);
-    }, [formData, submitSignal]);
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((previousData) => ({
-            ...previousData,
-            [name]: value
-        }));
-    };
-
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
-
-    return (
-        <section>
-            <h2>General Information</h2>
-
-            {isEditing ? (
-                <>
-                    <label>
-                        Name: <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Enter your name" />
-                    </label>
-                    <label>
-                        Family Name: <input type="text" name="familyName" value={formData.familyName} onChange={handleChange} placeholder="Enter your family name" />
-                    </label>
-                    <label>
-                        Email: <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="example@mailprovider.com" />
-                    </label>
-                    <label>
-                        Phone: <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+216 12 345 678" />
-                    </label>
-                </>
-            ) : (
-                <>
-                    <p><strong>Name:</strong> {submittedData?.name || 'N/A'}</p>
-                    <p><strong>Family Name:</strong> {submittedData?.familyName || 'N/A'}</p>
-                    <p><strong>Email:</strong> {submittedData?.email || 'N/A'}</p>
-                    <p><strong>Phone:</strong> {submittedData?.phone || 'N/A'}</p>
-                    <CVEditButton onEdit={handleEdit} />
-                </>
-            )}
-        </section>
-    );
+  return isEditing ? (
+    <>
+    <label>
+        <strong>Name:</strong> <input name="name" value={info.name} onChange={(e) => setInfo({ ...info, name: e.target.value })} placeholder="Enter your name" />
+    </label>
+    <label>
+        <strong>Family Name:</strong> <input name="familyName" value={info.familyName} onChange={(e) => setInfo({ ...info, familyName: e.target.value })} placeholder="Enter your family name" />
+    </label>
+    <label>
+        <strong>Email:</strong> <input name="email" type="email" value={info.email} onChange={(e) => setInfo({ ...info, email: e.target.value })} placeholder="Enter your email" />
+    </label>
+    <label>
+        <strong>Phone:</strong> <input name="phone" type="tel" value={info.phone} onChange={(e) => setInfo({ ...info, phone: e.target.value })} placeholder="Enter your phone number" />
+    </label>
+    <button onClick={() => setIsEditing(false)}>Save</button>
+    </>
+  ) : (
+    <>
+      <p><strong>Name:</strong> {info.name}</p>
+      <p><strong>Family Name:</strong> {info.familyName}</p>
+      <p><strong>Email:</strong> {info.email}</p>
+      <p><strong>Phone:</strong> {info.phone}</p>
+      <button onClick={() => setIsEditing(true)}>Edit</button>
+    </>
+  );
 }
+
+export default GeneralInfoSection;
