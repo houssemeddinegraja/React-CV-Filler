@@ -4,6 +4,10 @@ A small React app for filling out a CV/résumé. Each section is a form that tur
 
 Built as the "CV Application" project from [The Odin Project](https://www.theodinproject.com/lessons/node-path-react-new-cv-application).
 
+## Live demo
+
+The app is deployed with [Netlify](https://www.netlify.com/): **https://very-basic-cv-filler.netlify.app/**
+
 ## Description
 
 The app has three sections, each independent of the others:
@@ -60,6 +64,7 @@ cv-filler/
 - **react-dom**: `createRoot` rendering with `React.StrictMode`
 - **Plain CSS**: a single stylesheet, `styles/CVApp.css`
 - **Vite**: recommended dev server and bundler (the repo itself doesn't include a Vite config)
+- **Netlify**: hosting for the live demo
 
 ## How it works
 
